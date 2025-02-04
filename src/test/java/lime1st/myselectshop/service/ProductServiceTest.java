@@ -77,9 +77,8 @@ class ProductServiceTest {
         // updateProduct 메서드에서 최저가 비교하는 부분은 상품을 검색하기 전에 진행되므로 test1 처럼 given 을 할 필요가 없다.
 
         // when
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            productService.updateProduct(productId, requestMyPriceDto);
-        });
+        Exception exception = assertThrows(IllegalArgumentException.class,
+                () -> productService.updateProduct(productId, requestMyPriceDto));
 
         // then
         assertEquals(
