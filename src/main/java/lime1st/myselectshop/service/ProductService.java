@@ -5,6 +5,7 @@ import lime1st.myselectshop.dto.ProductRequestDto;
 import lime1st.myselectshop.dto.ProductResponseDto;
 import lime1st.myselectshop.entity.Product;
 import lime1st.myselectshop.naver.dto.ItemDto;
+import lime1st.myselectshop.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

@@ -1,4 +1,4 @@
-package lime1st.myselectshop.service;
+package lime1st.myselectshop.repository;
 
 import lime1st.myselectshop.entity.Product;
 import org.springframework.data.jpa.repository.JpaRepository;

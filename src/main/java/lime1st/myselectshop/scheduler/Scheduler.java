@@ -3,7 +3,7 @@ package lime1st.myselectshop.scheduler;
 import lime1st.myselectshop.entity.Product;
 import lime1st.myselectshop.naver.dto.ItemDto;
 import lime1st.myselectshop.naver.service.NaverApiService;
-import lime1st.myselectshop.service.ProductRepository;
+import lime1st.myselectshop.repository.ProductRepository;
 import lime1st.myselectshop.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
