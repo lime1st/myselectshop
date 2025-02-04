@@ -3,6 +3,9 @@ package lime1st.myselectshop.controller;
 import lime1st.myselectshop.dto.ProductMypriceRequestDto;
 import lime1st.myselectshop.dto.ProductRequestDto;
 import lime1st.myselectshop.dto.ProductResponseDto;
+import lime1st.myselectshop.entity.ApiUseTime;
+import lime1st.myselectshop.entity.User;
+import lime1st.myselectshop.repository.ApiUseTimeRepository;
 import lime1st.myselectshop.security.UserDetailsImpl;
 import lime1st.myselectshop.service.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -18,15 +21,46 @@ import org.springframework.web.bind.annotation.*;
 public class ProductController {
 
     private final ProductService productService;
+    private final ApiUseTimeRepository apiUseTimeRepository;
 
     @PostMapping("/products")
     public ProductResponseDto createProduct(@RequestBody ProductRequestDto requestDto,
                                             @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return productService.createProduct(requestDto, userDetails.getUser());
+        // 측정 시작 시간
+        long startTime = System.currentTimeMillis();
+
+        try {
+            // 응답 보내기
+            return productService.createProduct(requestDto, userDetails.getUser());
+        } finally {
+            // 측정 종료 시간
+            long endTime = System.currentTimeMillis();
+            // 수행시간 = 종료 시간 - 시작 시간
+            long runTime = endTime - startTime;
+
+            // 로그인 회원 정보
+            User loginUser = userDetails.getUser();
+
+            // API 사용시간 및 DB 에 기록
+            ApiUseTime apiUseTime = apiUseTimeRepository.findByUser(loginUser)
+                    .orElse(null);
+            if (apiUseTime == null) {
+                // 로그인 회원의 기록이 없으면
+                apiUseTime = new ApiUseTime(loginUser, runTime);
+            } else {
+                // 로그인 회원의 기록이 이미 있으면
+                apiUseTime.addUseTime(runTime);
+            }
+
+            System.out.println("[API Use Time] Username: " + loginUser.getUsername() +
+                    ", Total Time: " + apiUseTime.getTotalTime() + " ms");
+            apiUseTimeRepository.save(apiUseTime);
+        }
     }
 
     @PutMapping("/products/{id}")
-    public ProductResponseDto updateProduct(@PathVariable("id") Long id, @RequestBody ProductMypriceRequestDto requestDto) {
+    public ProductResponseDto updateProduct(@PathVariable("id") Long id,
+                                            @RequestBody ProductMypriceRequestDto requestDto) {
         log.info("price {}", requestDto.getMyprice());
         return productService.updateProduct(id, requestDto);
     }
@@ -42,7 +76,9 @@ public class ProductController {
     }
 
     @PostMapping("/products/{productId}/folder")
-    public void addFolder(@PathVariable("productId") Long productId, @RequestParam("folderId") Long folderId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public void addFolder(@PathVariable("productId") Long productId,
+                          @RequestParam("folderId") Long folderId,
+                          @AuthenticationPrincipal UserDetailsImpl userDetails) {
         productService.addFolder(productId, folderId, userDetails.getUser());
     }
 
