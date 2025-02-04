@@ -1,11 +1,16 @@
 package lime1st.myselectshop.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lime1st.myselectshop.dto.SignupRequestDto;
 import lime1st.myselectshop.dto.UserInfoDto;
 import lime1st.myselectshop.entity.UserRoleEnum;
+import lime1st.myselectshop.jwt.JwtUtil;
 import lime1st.myselectshop.security.UserDetailsImpl;
 import lime1st.myselectshop.service.FolderService;
+import lime1st.myselectshop.service.KakaoService;
 import lime1st.myselectshop.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,10 +19,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -29,6 +31,7 @@ public class UserController {
 
     private final UserService userService;
     private final FolderService folderService;
+    private final KakaoService kakaoService;
 
     @GetMapping("/user/login-page")
     public String loginPage() {
@@ -72,5 +75,19 @@ public class UserController {
         model.addAttribute("folders", folderService.getFolders(userDetails.getUser()));
 
         return "index :: #fragment";
+    }
+
+    // kakao 로그인 시에는 jwt 를 헤더에 넣을 수 없어서 쿠키에 넣는다.
+    @GetMapping("/user/kakao/callback")
+    public String kakaoLogin(@RequestParam("code") String code, HttpServletResponse response)
+            throws JsonProcessingException {
+
+        String token = kakaoService.kakaoLogin(code);
+
+        Cookie cookie = new Cookie(JwtUtil.AUTHORIZATION_HEADER, token);
+        cookie.setPath("/");
+        response.addCookie(cookie);
+
+        return "redirect:/";
     }
 }
