@@ -11,15 +11,15 @@ public class ProductResponseDto {
     private String title;
     private String link;
     private String image;
-    private int lPrice;
-    private int myPrice;
+    private int lprice;
+    private int myprice;
 
     public ProductResponseDto(Product product) {
         this.id = product.getId();
         this.title = product.getTitle();
         this.link = product.getLink();
         this.image = product.getImage();
-        this.lPrice = product.getLPrice();
-        this.myPrice = product.getMyPrice();
+        this.lprice = product.getLprice();
+        this.myprice = product.getMyprice();
     }
 }

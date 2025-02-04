@@ -1,6 +1,5 @@
 package lime1st.myselectshop.dto;
 
-import lime1st.myselectshop.entity.Product;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,5 +15,5 @@ public class ProductRequestDto {
     // 관심상품 구매링크 URL
     private String link;
     // 관심상품의 최저가
-    private int lPrice;
+    private int lprice;
 }

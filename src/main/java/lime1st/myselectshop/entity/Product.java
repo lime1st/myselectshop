@@ -1,12 +1,13 @@
 package lime1st.myselectshop.entity;
 
 import jakarta.persistence.*;
+import lime1st.myselectshop.dto.ProductMyPriceRequestDto;
 import lime1st.myselectshop.dto.ProductRequestDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity // JPA가 관리할 수 있는 Entity 클래스 지정
+@Entity // JPA 가 관리할 수 있는 Entity 클래스 지정
 @Getter
 @Setter
 @Table(name = "product") // 매핑할 테이블의 이름을 지정
@@ -27,15 +28,19 @@ public class Product extends Timestamped {
     private String link;
 
     @Column(nullable = false)
-    private int lPrice;
+    private int lprice;
 
     @Column(nullable = false)
-    private int myPrice;
+    private int myprice;
 
     public Product(ProductRequestDto requestDto) {
         this.title = requestDto.getTitle();
         this.image = requestDto.getImage();
         this.link = requestDto.getLink();
-        this.lPrice = requestDto.getLPrice();
+        this.lprice = requestDto.getLprice();
+    }
+
+    public void update(ProductMyPriceRequestDto requestDto) {
+        this.myprice = requestDto.getMyprice();
     }
 }
