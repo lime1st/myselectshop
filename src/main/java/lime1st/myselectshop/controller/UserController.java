@@ -5,11 +5,13 @@ import lime1st.myselectshop.dto.SignupRequestDto;
 import lime1st.myselectshop.dto.UserInfoDto;
 import lime1st.myselectshop.entity.UserRoleEnum;
 import lime1st.myselectshop.security.UserDetailsImpl;
+import lime1st.myselectshop.service.FolderService;
 import lime1st.myselectshop.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,6 +28,7 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
+    private final FolderService folderService;
 
     @GetMapping("/user/login-page")
     public String loginPage() {
@@ -41,7 +44,7 @@ public class UserController {
     public String signup(@Valid SignupRequestDto requestDto, BindingResult bindingResult) {
         // Validation 예외처리
         List<FieldError> fieldErrors = bindingResult.getFieldErrors();
-        if(!fieldErrors.isEmpty()) {
+        if (!fieldErrors.isEmpty()) {
             for (FieldError fieldError : bindingResult.getFieldErrors()) {
                 log.error("{} 필드 : {}", fieldError.getField(), fieldError.getDefaultMessage());
             }
@@ -62,5 +65,12 @@ public class UserController {
         boolean isAdmin = (role == UserRoleEnum.ADMIN);
 
         return new UserInfoDto(username, isAdmin);
+    }
+
+    @GetMapping("/user-folder")
+    public String getUserInfo(Model model, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        model.addAttribute("folders", folderService.getFolders(userDetails.getUser()));
+
+        return "index :: #fragment";
     }
 }
