@@ -36,8 +36,7 @@ public class UseTimeAop {
 
         try {
             // 핵심기능 수행
-            Object output = joinPoint.proceed();
-            return output;
+            return joinPoint.proceed();
         } finally {
             // 측정 종료 시간
             long endTime = System.currentTimeMillis();
