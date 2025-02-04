@@ -1,6 +1,6 @@
 package lime1st.myselectshop.controller;
 
-import lime1st.myselectshop.dto.ProductMyPriceRequestDto;
+import lime1st.myselectshop.dto.ProductMypriceRequestDto;
 import lime1st.myselectshop.dto.ProductRequestDto;
 import lime1st.myselectshop.dto.ProductResponseDto;
 import lime1st.myselectshop.security.UserDetailsImpl;
@@ -26,7 +26,7 @@ public class ProductController {
     }
 
     @PutMapping("/products/{id}")
-    public ProductResponseDto updateProduct(@PathVariable("id") Long id, @RequestBody ProductMyPriceRequestDto requestDto) {
+    public ProductResponseDto updateProduct(@PathVariable("id") Long id, @RequestBody ProductMypriceRequestDto requestDto) {
         log.info("price {}", requestDto.getMyprice());
         return productService.updateProduct(id, requestDto);
     }

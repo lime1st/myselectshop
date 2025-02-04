@@ -1,6 +1,6 @@
 package lime1st.myselectshop.service;
 
-import lime1st.myselectshop.dto.ProductMyPriceRequestDto;
+import lime1st.myselectshop.dto.ProductMypriceRequestDto;
 import lime1st.myselectshop.dto.ProductRequestDto;
 import lime1st.myselectshop.dto.ProductResponseDto;
 import lime1st.myselectshop.entity.*;
@@ -34,8 +34,9 @@ public class ProductService {
     }
 
     @Transactional
-    public ProductResponseDto updateProduct(Long id, ProductMyPriceRequestDto requestDto) {
+    public ProductResponseDto updateProduct(Long id, ProductMypriceRequestDto requestDto) {
         int myPrice = requestDto.getMyprice();
+
         if (myPrice < MIN_MY_PRICE) {
             throw new IllegalArgumentException("유효하지 않은 관심 가격입니다. 최소 " + MIN_MY_PRICE + "원 이상으로 설정해 주세요.");
         }

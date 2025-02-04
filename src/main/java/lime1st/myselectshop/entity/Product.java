@@ -1,7 +1,7 @@
 package lime1st.myselectshop.entity;
 
 import jakarta.persistence.*;
-import lime1st.myselectshop.dto.ProductMyPriceRequestDto;
+import lime1st.myselectshop.dto.ProductMypriceRequestDto;
 import lime1st.myselectshop.dto.ProductRequestDto;
 import lime1st.myselectshop.naver.dto.ItemDto;
 import lombok.Getter;
@@ -52,7 +52,7 @@ public class Product extends Timestamped {
         this.user = user;
     }
 
-    public void update(ProductMyPriceRequestDto requestDto) {
+    public void update(ProductMypriceRequestDto requestDto) {
         this.myprice = requestDto.getMyprice();
     }
 
