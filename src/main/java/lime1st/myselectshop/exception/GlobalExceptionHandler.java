@@ -31,7 +31,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler({ProductNotFoundException.class})
-    public ResponseEntity<RestApiException> notFoundProductExceptionHandler(ProductNotFoundException ex) {
+    public ResponseEntity<RestApiException> productNotFoundExceptionHandler(ProductNotFoundException ex) {
         RestApiException restApiException = new RestApiException(ex.getMessage(), HttpStatus.NOT_FOUND.value());
         return new ResponseEntity<>(
                 // HTTP body

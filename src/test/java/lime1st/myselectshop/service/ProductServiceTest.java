@@ -13,7 +13,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.context.MessageSource;
 
+import java.util.Locale;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -30,6 +32,9 @@ class ProductServiceTest {
 
     @Mock
     ProductFolderRepository productFolderRepository;
+
+    @Mock
+    MessageSource messageSource;
 
     @Test
     @DisplayName("관심 상품 희망가 - 최저가 이상으로 변경")
@@ -51,7 +56,8 @@ class ProductServiceTest {
 
         Product product = new Product(requestProductDto, user);
 
-        ProductService productService = new ProductService(productRepository, folderRepository, productFolderRepository);
+        ProductService productService = new ProductService(
+                productRepository, folderRepository, productFolderRepository, messageSource);
 
         given(productRepository.findById(productId)).willReturn(Optional.of(product));
 
@@ -72,9 +78,16 @@ class ProductServiceTest {
         ProductMypriceRequestDto requestMyPriceDto = new ProductMypriceRequestDto();
         requestMyPriceDto.setMyprice(myprice);
 
-        ProductService productService = new ProductService(productRepository, folderRepository, productFolderRepository);
+        ProductService productService = new ProductService(
+                productRepository, folderRepository, productFolderRepository, messageSource);
 
         // updateProduct 메서드에서 최저가 비교하는 부분은 상품을 검색하기 전에 진행되므로 test1 처럼 given 을 할 필요가 없다.
+        given(messageSource.getMessage(
+                "below.min.my.price",
+                new Integer[]{ProductService.MIN_MY_PRICE},
+                "Wrong Price",
+                Locale.getDefault()
+        )).willReturn("최저 희망가는 최소 " + ProductService.MIN_MY_PRICE +"원 이상으로 설정해 주세요.");
 
         // when
         Exception exception = assertThrows(IllegalArgumentException.class,
@@ -82,7 +95,7 @@ class ProductServiceTest {
 
         // then
         assertEquals(
-                "유효하지 않은 관심 가격입니다. 최소 " + ProductService.MIN_MY_PRICE + "원 이상으로 설정해 주세요.",
+                "최저 희망가는 최소 " + ProductService.MIN_MY_PRICE + "원 이상으로 설정해 주세요.",
                 exception.getMessage()
         );
     }
