@@ -79,9 +79,9 @@ class UserProductMvcTest {
 
     private void mockUserSetup() {
         // Mock 테스트 유져 생성
-        String username = "sollertia4351";
-        String password = "robbie1234";
-        String email = "sollertia@sparta.com";
+        String username = "alice";
+        String password = "1234";
+        String email = "alice@mail.com";
         UserRoleEnum role = UserRoleEnum.USER;
         User testUser = new User(username, password, email, role);
         UserDetailsImpl testUserDetails = new UserDetailsImpl(testUser);
@@ -104,9 +104,9 @@ class UserProductMvcTest {
     void test2() throws Exception {
         // given
         MultiValueMap<String, String> signupRequestForm = new LinkedMultiValueMap<>();
-        signupRequestForm.add("username", "sollertia4351");
-        signupRequestForm.add("password", "robbie1234");
-        signupRequestForm.add("email", "sollertia@sparta.com");
+        signupRequestForm.add("username", "alic3");
+        signupRequestForm.add("password", "1234");
+        signupRequestForm.add("email", "alice@mail.com");
         signupRequestForm.add("admin", "false");
 
         // when - then
