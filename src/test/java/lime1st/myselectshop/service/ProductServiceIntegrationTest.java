@@ -4,6 +4,7 @@ import lime1st.myselectshop.dto.ProductMypriceRequestDto;
 import lime1st.myselectshop.dto.ProductRequestDto;
 import lime1st.myselectshop.dto.ProductResponseDto;
 import lime1st.myselectshop.entity.User;
+import lime1st.myselectshop.entity.UserRoleEnum;
 import lime1st.myselectshop.repository.UserRepository;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +43,7 @@ class ProductServiceIntegrationTest {
                 linkUrl,
                 lPrice
         );
+        userRepository.save(new User("alice", "1234", "alice@mail.com", UserRoleEnum.USER));
         user = userRepository.findById(1L).orElse(null);
 
         // when
