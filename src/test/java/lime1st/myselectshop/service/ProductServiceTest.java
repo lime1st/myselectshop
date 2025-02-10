@@ -18,7 +18,8 @@ import org.springframework.context.MessageSource;
 import java.util.Locale;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class) // @Mock 사용을 위해 설정합니다.
